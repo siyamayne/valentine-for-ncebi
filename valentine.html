@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will you be my Valentine? 💕</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #ffe0f0 50%, #ffd4e8 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Floating hearts background */
+        .hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0.6;
+            animation: float-up 8s linear infinite;
+        }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Landing Page */
+        .landing-page {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .name {
+            font-family: 'Pacifico', cursive;
+            font-size: 5rem;
+            color: #ff1493;
+            text-shadow: 3px 3px 6px rgba(255, 20, 147, 0.3);
+            margin-bottom: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .question {
+            font-size: 2rem;
+            color: #c71585;
+            font-weight: 600;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 30px;
+        }
+
+        .btn {
+            padding: 20px 50px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Quicksand', sans-serif;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #ff1493, #ff69b4);
+            color: white;
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 20, 147, 0.4);
+        }
+
+        .btn-no {
+            background: linear-gradient(135deg, #ddd, #bbb);
+            color: #666;
+            position: absolute;
+        }
+
+        /* Appreciation Page */
+        .appreciation-page {
+            display: none;
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .appreciation-page.active {
+            display: flex;
+        }
+
+        .appreciation-content {
+            max-width: 700px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(255, 20, 147, 0.2);
+            text-align: center;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .appreciation-title {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.5rem;
+            color: #ff1493;
+            margin-bottom: 30px;
+        }
+
+        .appreciation-message {
+            font-size: 1.2rem;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .appreciation-highlight {
+            color: #ff1493;
+            font-weight: 600;
+        }
+
+        .continue-btn {
+            margin-top: 40px;
+            padding: 18px 45px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #ff1493, #ff69b4);
+            color: white;
+            font-family: 'Quicksand', sans-serif;
+            box-shadow: 0 4px 15px rgba(255, 20, 147, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .continue-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 20, 147, 0.4);
+        }
+
+        /* Mystery Gifts Page */
+        .gifts-page {
+            display: none;
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .gifts-page.active {
+            display: block;
+        }
+
+        .gifts-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .gifts-title {
+            font-family: 'Pacifico', cursive;
+            font-size: 3rem;
+            color: #ff1493;
+            margin-bottom: 15px;
+        }
+
+        .gifts-instruction {
+            font-size: 1.5rem;
+            color: #c71585;
+            font-weight: 600;
+        }
+
+        .gifts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .gift-card {
+            perspective: 1000px;
+            height: 300px;
+        }
+
+        .gift-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .gift-card.flipped .gift-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .gift-card.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .gift-front, .gift-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+        }
+
+        .gift-front {
+            background: linear-gradient(135deg, #ffb6d9, #ff8cc6);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .gift-back {
+            background: linear-gradient(135deg, #ff1493, #ff69b4);
+            color: white;
+            transform: rotateY(180deg);
+            text-align: center;
+            padding: 30px;
+            font-size: 1.8rem;
+            line-height: 1.4;
+        }
+
+        .counter {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 1.3rem;
+            color: #c71585;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .name {
+                font-size: 3rem;
+            }
+            
+            .question {
+                font-size: 1.5rem;
+            }
+            
+            .btn {
+                padding: 15px 35px;
+                font-size: 1.2rem;
+            }
+
+            .appreciation-content {
+                padding: 30px 25px;
+            }
+
+            .appreciation-title {
+                font-size: 2rem;
+            }
+
+            .appreciation-message {
+                font-size: 1.1rem;
+            }
+
+            .continue-btn {
+                padding: 15px 35px;
+                font-size: 1.2rem;
+            }
+
+            .gifts-title {
+                font-size: 2rem;
+            }
+
+            .gifts-instruction {
+                font-size: 1.2rem;
+            }
+
+            .button-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating hearts background -->
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <!-- Landing Page -->
+    <div class="landing-page" id="landingPage">
+        <h1 class="name">Nonceba</h1>
+        <p class="question">Can you be my valentine?</p>
+        <div class="button-container">
+            <button class="btn btn-yes" id="yesBtn">Yes! 💕</button>
+            <button class="btn btn-no" id="noBtn">No</button>
+        </div>
+    </div>
+
+    <!-- Appreciation Page -->
+    <div class="appreciation-page" id="appreciationPage">
+        <div class="appreciation-content">
+            <h2 class="appreciation-title">Before we continue... 💖</h2>
+            
+            <p class="appreciation-message">
+                I just want to take a moment to tell you how incredibly grateful I am for you.
+            </p>
+            
+            <p class="appreciation-message">
+                Your <span class="appreciation-highlight">love</span> has been my safe haven, my joy, and my strength. The way you care for me, support me, and believe in me means everything.
+            </p>
+            
+            <p class="appreciation-message">
+                Your <span class="appreciation-highlight">empathy</span> and kindness never cease to amaze me. You have this beautiful gift of understanding people, of making me feel heard and valued, even on my hardest days.
+            </p>
+            
+            <p class="appreciation-message">
+                Looking back at our <span class="appreciation-highlight">1 year and 7 months</span> together, I'm in awe of how far we've come. We've grown together, laughed together, overcome challenges together, and built something truly special.
+            </p>
+            
+            <p class="appreciation-message">
+                You are my best friend, my partner, and the love of my life. Thank you for being you. ❤️
+            </p>
+            
+            <button class="continue-btn" id="continueBtn">Continue to Your Gifts 🎁</button>
+        </div>
+    </div>
+
+    <!-- Mystery Gifts Page -->
+    <div class="gifts-page" id="giftsPage">
+        <div class="gifts-header">
+            <h1 class="gifts-title">Choose Your Gifts! 🎁</h1>
+            <p class="gifts-instruction">Pick ANY TWO mystery gifts</p>
+        </div>
+        
+        <div class="gifts-container">
+            <div class="gift-card" data-gift="1">
+                <div class="gift-card-inner">
+                    <div class="gift-front">
+                        Mystery Gift 1<br>🎁
+                    </div>
+                    <div class="gift-back">
+                        Gift 1:<br>A L__t_p B__...
+                    </div>
+                </div>
+            </div>
+
+            <div class="gift-card" data-gift="2">
+                <div class="gift-card-inner">
+                    <div class="gift-front">
+                        Mystery Gift 2<br>🎁
+                    </div>
+                    <div class="gift-back">
+                        Gift 2:<br>A S__nt...
+                    </div>
+                </div>
+            </div>
+
+            <div class="gift-card" data-gift="3">
+                <div class="gift-card-inner">
+                    <div class="gift-front">
+                        Mystery Gift 3<br>🎁
+                    </div>
+                    <div class="gift-back">
+                        Gift 3:<br>A S__pr_se...
+                    </div>
+                </div>
+            </div>
+
+            <div class="gift-card" data-gift="4">
+                <div class="gift-card-inner">
+                    <div class="gift-front">
+                        Mystery Gift 4<br>🎁
+                    </div>
+                    <div class="gift-back">
+                        Gift 4:<br>A _at_h...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="counter" id="counter">
+            Gifts selected: <span id="selectedCount">0</span> / 2
+        </div>
+    </div>
+
+    <script>
+        // Create floating hearts
+        const heartsContainer = document.getElementById('heartsContainer');
+        const heartEmojis = ['💕', '💖', '💗', '💓', '💝', '💞', '❤️', '🌹'];
+        
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (Math.random() * 4 + 6) + 's';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            heartsContainer.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 10000);
+        }
+        
+        // Create hearts continuously
+        setInterval(createHeart, 400);
+        for (let i = 0; i < 15; i++) {
+            setTimeout(createHeart, i * 300);
+        }
+
+        // No button dodging logic
+        const noBtn = document.getElementById('noBtn');
+        let noBtnClicks = 0;
+
+        function moveNoButton() {
+            const maxX = window.innerWidth - noBtn.offsetWidth - 40;
+            const maxY = window.innerHeight - noBtn.offsetHeight - 40;
+            
+            const newX = Math.random() * maxX;
+            const newY = Math.random() * maxY;
+            
+            noBtn.style.left = newX + 'px';
+            noBtn.style.top = newY + 'px';
+        }
+
+        noBtn.addEventListener('mouseenter', moveNoButton);
+        noBtn.addEventListener('click', moveNoButton);
+        
+        // Touch support for mobile
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            moveNoButton();
+        });
+
+        // Yes button logic
+        const yesBtn = document.getElementById('yesBtn');
+        const landingPage = document.getElementById('landingPage');
+        const appreciationPage = document.getElementById('appreciationPage');
+        const giftsPage = document.getElementById('giftsPage');
+
+        yesBtn.addEventListener('click', () => {
+            landingPage.style.display = 'none';
+            appreciationPage.classList.add('active');
+        });
+
+        // Continue button logic
+        const continueBtn = document.getElementById('continueBtn');
+        
+        continueBtn.addEventListener('click', () => {
+            appreciationPage.classList.remove('active');
+            appreciationPage.style.display = 'none';
+            giftsPage.classList.add('active');
+        });
+
+        // Mystery gifts logic
+        const giftCards = document.querySelectorAll('.gift-card');
+        const selectedCountSpan = document.getElementById('selectedCount');
+        let selectedCount = 0;
+        const maxSelections = 2;
+
+        giftCards.forEach(card => {
+            card.addEventListener('click', () => {
+                if (card.classList.contains('flipped')) {
+                    // Unflip
+                    card.classList.remove('flipped');
+                    selectedCount--;
+                    updateCounter();
+                    enableAllCards();
+                } else if (selectedCount < maxSelections) {
+                    // Flip
+                    card.classList.add('flipped');
+                    selectedCount++;
+                    updateCounter();
+                    
+                    if (selectedCount === maxSelections) {
+                        disableUnselectedCards();
+                    }
+                }
+            });
+        });
+
+        function updateCounter() {
+            selectedCountSpan.textContent = selectedCount;
+        }
+
+        function disableUnselectedCards() {
+            giftCards.forEach(card => {
+                if (!card.classList.contains('flipped')) {
+                    card.classList.add('disabled');
+                }
+            });
+        }
+
+        function enableAllCards() {
+            giftCards.forEach(card => {
+                card.classList.remove('disabled');
+            });
+        }
+    </script>
+</body>
+</html>
